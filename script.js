@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(`Chưa cài đặt link cho ${platform}`);
                     return;
             }
-            
+
             if (url) {
                 window.open(url, '_blank');
             }
