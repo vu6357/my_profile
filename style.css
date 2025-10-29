@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@1,700&family=Pacifico&display=swap');
-
 :root {
-    --bg-main: rgba(255, 255, 255, 0.25); 
+    --bg-main: rgba(255, 255, 255, 0.15);
     --bg-block: rgba(0, 0, 0, 0.5); 
     --text-light: #f0f0f0; 
     --accent-color-1: #4AF2A1;
     --accent-color-2: #B358F5;
-    --accent-color-3: #FF5733; 
-    --accent-color-4: #33FF57; 
+    --accent-color-3: #FF5733;
+    --accent-color-4: #33FF57;
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4); 
     --border-soft: 1px solid rgba(255, 255, 255, 0.1);
     --font-primary: 'Consolas', 'Courier New', monospace; 
@@ -43,8 +42,9 @@ body::before {
 .profile-container {
     background: var(--bg-main); 
     border-radius: 20px; 
+    
     box-shadow: 0 0 20px var(--accent-color-1);
-    animation: animated-glow 6s linear infinite;
+    animation: animated-glow 6s linear infinite; 
     backdrop-filter: blur(8px); 
     -webkit-backdrop-filter: blur(8px);
     border: var(--border-soft);
@@ -57,16 +57,30 @@ body::before {
     grid-template-rows: auto auto auto; 
     grid-template-areas: 
         "left-panel right-panel"
-        "bio-section bio-section"
+        "bio-section right-panel"
         "username-area username-area"; 
     gap: 20px;
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewport="0 0 16 16"><text x="0" y="15" font-size="16">🐧</text></svg>') 8 8, auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease-in 0.3s;
+}
+
+.music-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px; 
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease-in 0.3s;
 }
 
 .music-button {
-    position: fixed; 
-    top: 20px; 
-    right: 20px; 
     width: 40px;
     height: 40px;
     background: var(--bg-block);
@@ -74,7 +88,6 @@ body::before {
     border: 1px solid var(--accent-color-1);
     border-radius: 50%;
     font-size: 1.1em;
-    z-index: 100;
     box-shadow: 0 0 10px rgba(74, 242, 161, 0.5);
     transition: all 0.3s ease;
     
@@ -85,6 +98,53 @@ body::before {
     transform: scale(1.1);
     background: var(--accent-color-1);
     color: #000;
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-block);
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.volume-container i {
+    color: var(--text-light);
+    font-size: 0.9em;
+}
+
+#volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px; 
+    height: 5px; 
+    background: #555; 
+    outline: none;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+#volume-slider:hover {
+     background: #777;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: var(--accent-color-1);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: var(--accent-color-1);
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .left-panel {
@@ -114,6 +174,11 @@ body::before {
     background-position: center;
     border: 3px solid var(--accent-color-1); 
     box-shadow: 0 0 15px rgba(74, 242, 161, 0.5); 
+    transition: transform 0.3s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
 }
 
 .input-field {
@@ -146,32 +211,28 @@ body::before {
     text-shadow: 0 0 8px var(--accent-color-1);
 }
 
-.input-field.email-field:focus {
-    outline: none;
-}
-
 .right-panel {
     grid-area: right-panel;
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 15px;
-    align-items: flex-start;
 }
 
 .social-links {
     grid-column: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
     align-items: center;
-    padding-top: 5px; 
+    
+    height: 100%;
+    justify-content: space-around;
 }
 
 .social-circle {
-    width: 45px; 
-    height: 45px;
+    width: 55px; 
+    height: 55px; 
     border-radius: 50%;
-    font-size: 1.3em; 
+    font-size: 1.6em; 
     padding: 0;
     background: var(--bg-block);
     border: none;
@@ -184,32 +245,39 @@ body::before {
     box-shadow: 
         0 0 10px var(--accent-color-2), 
         0 0 20px var(--accent-color-2); 
-    transform: scale(1.05);
+    transform: scale(1.3); 
 }
 
 .social-circle::after {
-    content: attr(data-text);
+    content: attr(data-text); 
     position: absolute;
-    left: 120%;
+    left: 120%; 
     top: 50%;
-    transform: translateY(-50%);
+    
+    transform: translateY(-40%) rotate(0deg); 
     
     background: var(--bg-block);
     color: var(--text-light);
     padding: 5px 10px;
     border-radius: 5px;
-    font-size: 0.8em;
-    font-family: var(--font-primary);
-    white-space: nowrap;
+    
+    font-size: 0.9em; 
+    font-family: Arial, sans-serif; 
+    font-weight: bold; 
+    text-shadow: 0 0 2px rgba(0,0,0,0.7); 
+    
+    white-space: nowrap; 
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
     z-index: 10;
 }
-
 .social-circle:hover::after {
     opacity: 1;
     visibility: visible;
+    
+    transform: translateY(-50%) rotate(-5deg); 
 }
 
 .spotify-group {
@@ -217,18 +285,31 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 15px;
-}
-
-.spotify-list {
-    height: 352px; 
-    overflow: hidden; 
-    padding: 0; 
+    
     background: var(--bg-block); 
     border-radius: 12px;
+    padding: 20px; 
     box-shadow: 
         0 0 10px rgba(74, 242, 161, 0.4), 
         0 0 20px rgba(74, 242, 161, 0.2); 
     border: 1px solid var(--accent-color-1); 
+}
+
+.music-title {
+    font-family: var(--font-primary);
+    font-size: 1.4em;
+    color: var(--accent-color-1); 
+    text-align: center;
+    margin: 0;
+    padding-bottom: 12px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px var(--accent-color-1);
+}
+
+.spotify-list {
+    height: 352px;
+    overflow: hidden; 
+    padding: 0; 
 }
 
 .spotify-list iframe {
@@ -240,31 +321,37 @@ body::before {
 .bio-section {
     grid-area: bio-section;
     padding: 20px;
-    height: 80px;
     border-radius: 12px;
     position: relative;
     overflow: hidden;
     
     background: var(--bg-block);
-    box-shadow: var(--shadow-soft);
-    background-image: none;
     
-    font-family: var(--font-primary); 
+    box-shadow: 
+        0 0 10px rgba(74, 242, 161, 0.4), 
+        0 0 20px rgba(74, 242, 161, 0.2); 
+    border: 1px solid var(--accent-color-1); 
+    
+    background-image: none; 
+    
+    font-family: 'Pacifico', cursive; 
     font-size: 1.1em;
     display: flex;
     align-items: center;
     justify-content: center;
-    letter-spacing: 5px; 
+    letter-spacing: normal; 
 }
 
 .bio-section::before {
-    content: none; /
+    content: none; 
 }
 
 .bio-section p {
     position: relative;
     z-index: 2;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-align: center; 
+    line-height: 1.5;   
 }
 
 .username-section {
@@ -310,6 +397,7 @@ body::before {
     100% { background-position: 300% center; }
 }
 
+/* Keyframes cho viền chạy màu */
 @keyframes animated-glow {
     0% { box-shadow: 0 0 20px var(--accent-color-1); }
     25% { box-shadow: 0 0 30px var(--accent-color-2); }
@@ -333,4 +421,63 @@ body::before {
     box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
     font-family: 'Pacifico', cursive;
     cursor: default; 
+}
+
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10000;
+    cursor: pointer;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.5s ease-out;
+}
+
+#splash-screen h2 {
+    font-family: var(--font-primary);
+    font-size: 2.5em;
+    color: #aedcff;
+    text-shadow: 
+        0 0 10px rgba(174, 220, 255, 0.7), 
+        0 0 20px rgba(174, 220, 255, 0.5);
+    margin-top: 20px;
+}
+
+.loader-dots {
+    font-size: 3em;
+    color: white;
+    text-shadow: 0 0 10px white;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    animation: pulse 1.5s linear infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+
+#splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.profile-container.visible,
+.music-controls.visible {
+    opacity: 1;
+    visibility: visible;
 }

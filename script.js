@@ -1,18 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const music = document.getElementById('bg-music');
     const toggleBtn = document.getElementById('music-toggle-btn');
     const toggleBtnIcon = toggleBtn.querySelector('i');
+    
+    const splashScreen = document.getElementById('splash-screen');
+    const profileContainer = document.querySelector('.profile-container');
 
-    const playPromise = music.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.warn("Autoplay bị chặn, cần người dùng tương tác.");
-            toggleBtnIcon.classList.remove('fa-pause');
-            toggleBtnIcon.classList.add('fa-play');
-        });
-    }
+    const musicControls = document.querySelector('.music-controls');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeIcon = document.getElementById('volume-icon');
 
+    const volDownBtn = document.getElementById('vol-down-btn');
+    const volUpBtn = document.getElementById('vol-up-btn');
+    const volStep = 0.1; 
+
+    toggleBtnIcon.classList.remove('fa-pause');
+    toggleBtnIcon.classList.add('fa-play');
+
+    splashScreen.addEventListener('click', () => {
+        music.play();
+        toggleBtnIcon.classList.remove('fa-play');
+        toggleBtnIcon.classList.add('fa-pause');
+        splashScreen.classList.add('hidden');
+        profileContainer.classList.add('visible');
+        musicControls.classList.add('visible'); 
+    }, { once: true }); 
+    
     toggleBtn.addEventListener('click', () => {
         if (music.paused) {
             music.play();
@@ -25,28 +39,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const emailInput = document.getElementById('email-input');
-    if (emailInput) {
-        emailInput.addEventListener('click', () => {
-            const email = emailInput.value;
-            const originalValue = emailInput.value;
+    function updateVolumeUI(vol) {
+        volumeSlider.value = vol;
 
-            navigator.clipboard.writeText(email).then(() => {
-                emailInput.value = "Đã sao chép!";
-                setTimeout(() => {
-                    emailInput.value = originalValue;
-                }, 2000);
-            }).catch(err => {
-                console.error('Không thể sao chép: ', err);
-                emailInput.value = "Lỗi sao chép!";
-                setTimeout(() => {
-                    emailInput.value = originalValue;
-                }, 2000);
-            });
-        });
+        if (vol == 0) {
+            volumeIcon.classList.remove('fa-volume-high', 'fa-volume-low');
+            volumeIcon.classList.add('fa-volume-mute');
+        } else if (vol < 0.5) {
+            volumeIcon.classList.remove('fa-volume-high', 'fa-volume-mute');
+            volumeIcon.classList.add('fa-volume-low');
+        } else {
+            volumeIcon.classList.remove('fa-volume-low', 'fa-volume-mute');
+            volumeIcon.classList.add('fa-volume-high');
+        }
     }
 
+    music.volume = volumeSlider.value;
 
+    volumeSlider.addEventListener('input', (e) => {
+        music.volume = e.target.value;
+        updateVolumeUI(e.target.value);
+    });
+
+    volDownBtn.addEventListener('click', () => {
+        let newVol = music.volume - volStep;
+        if (newVol < 0) newVol = 0; 
+        music.volume = newVol;
+        updateVolumeUI(newVol); 
+    });
+
+    volUpBtn.addEventListener('click', () => {
+        let newVol = music.volume + volStep;
+        if (newVol > 1) newVol = 1; 
+        music.volume = newVol;
+        updateVolumeUI(newVol); 
+    });
+    
     const socialCircles = document.querySelectorAll('.social-circle');
 
     socialCircles.forEach(circle => {

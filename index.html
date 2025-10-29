@@ -10,10 +10,30 @@
 </head>
 <body>
 
-    <button id="music-toggle-btn" class="music-button">
-        <i class="fas fa-pause"></i>
-    </button>
-    <audio id="bg-music" src="in_the_rain.mp3" loop autoplay></audio>
+    <div id="splash-screen">
+        <p class="loader-dots">...</p>
+        <h2>I think it’s okay, right?</h2>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle-btn" class="music-button">
+            <i class="fas fa-pause"></i>
+        </button>
+
+        <button id="vol-down-btn" class="music-button">
+            <i class="fas fa-volume-down"></i>
+        </button>
+
+        <div class="volume-container">
+            <i class="fas fa-volume-high" id="volume-icon"></i>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+        </div>
+
+        <button id="vol-up-btn" class="music-button">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+    <audio id="bg-music" src="in_the_rain.mp3" loop></audio> 
 
     
     <div class="profile-container">
@@ -25,8 +45,7 @@
             </div>
             <input type="text" value="VuXLoD" class="input-field name-field" readonly>
             
-            <input type="email" value="vu8806@gmail.com" class="input-field email-field" id="email-input" readonly>
-        </div>
+            </div>
 
         <div class="right-panel">
             <div class="social-links">
@@ -38,6 +57,7 @@
             </div>
             
             <div class="spotify-group">
+                <h3 class="music-title">My music playlist</h3>
                 <div class="spotify-list">
                     <iframe 
                         data-testid="embed-iframe" 
@@ -51,7 +71,9 @@
         </div>
         
         <div class="bio-section">
-            <p>CHILLLLLLLLLLLLL</p>
+            <p>Thích ngồi yên, nghe nhạc, và làm mấy thứ chẳng ai hiểu.<br>
+                Có lúc vui, có lúc lười… nhưng vẫn ổn.<br>
+                cre: ChatGPT</p>
         </div>
         
         <div class="username-section">

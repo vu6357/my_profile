@@ -1,76 +1,45 @@
-// script.js
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-document.addEventListener('DOMContentLoaded', () => {
-    
-    const music = document.getElementById('bg-music');
-    const toggleBtn = document.getElementById('music-toggle-btn');
-    const toggleBtnIcon = toggleBtn.querySelector('i');
+const hostname = '127.0.0.1';
+const port = 3000;
 
-    const playPromise = music.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.warn("Autoplay bị chặn, cần người dùng tương tác.");
-            toggleBtnIcon.classList.remove('fa-pause');
-            toggleBtnIcon.classList.add('fa-play');
-        });
+const server = http.createServer((req, res) => {
+    let filePath = '.' + req.url;
+    if (filePath === './') {
+        filePath = './index.html';
     }
 
-    toggleBtn.addEventListener('click', () => {
-        if (music.paused) {
-            music.play();
-            toggleBtnIcon.classList.remove('fa-play');
-            toggleBtnIcon.classList.add('fa-pause');
+    const extname = String(path.extname(filePath)).toLowerCase();
+    const mimeTypes = {
+        '.html': 'text/html',
+        '.css': 'text/css',
+        '.js': 'text/javascript',
+        '.gif': 'image/gif', 
+        '.jpg': 'image/jpeg',
+        '.mp3': 'audio/mpeg',
+    };
+
+    const contentType = mimeTypes[extname] || 'application/octet-stream';
+
+    fs.readFile(filePath, (error, content) => {
+        if (error) {
+            if(error.code == 'ENOENT') {
+                res.writeHead(404);
+                res.end('404 Not Found: Khong tim thay file ' + filePath);
+            } else {
+                res.writeHead(500);
+                res.end('Loi Server: '+error.code+' ..\n');
+            }
         } else {
-            music.pause();
-            toggleBtnIcon.classList.remove('fa-pause');
-            toggleBtnIcon.classList.add('fa-play');
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(content, 'utf-8');
         }
     });
+});
 
-    const socialCircles = document.querySelectorAll('.social-circle');
-
-    socialCircles.forEach(circle => {
-        circle.addEventListener('click', (event) => {
-            
-            const platform = event.currentTarget.getAttribute('data-platform');
-            let url = '';
-            
-            if (platform === 'Info') {
-                
-                const trollText = document.createElement('div');
-                trollText.id = 'troll-text';
-                trollText.textContent = 'hẹ hẹ hẹ hẹ hẹ';
-                document.body.appendChild(trollText);
-
-                setTimeout(() => {
-                    document.body.removeChild(trollText);
-                    location.reload();
-                }, 3000);
-                
-                return;
-            }
-            
-            switch (platform) {
-                case 'Discord':
-                    url = 'https://discord.gg/xsaJneqzGy'; 
-                    break;
-                case 'Facebook':
-                    url = 'https://facebook.com/vu6357';
-                    break;
-                case 'TikTok':
-                    url = 'https://tiktok.com/@vu6357';
-                    break;
-                case 'Roblox':
-                    url = 'https://www.roblox.com/users/447743615/profile'; 
-                    break;
-                default:
-                    alert(`Chưa cài đặt link cho ${platform}`);
-                    return;
-            }
-            
-            if (url) {
-                window.open(url, '_blank');
-            }
-        });
-    });
+server.listen(port, hostname, () => {
+    console.log(`Server dang chay tai http://${hostname}:${port}/`);
+    console.log('Mo duong link nay tren trinh duyet.');
 });
