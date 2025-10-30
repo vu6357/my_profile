@@ -164,7 +164,13 @@ body::before {
     width: 100%; 
     margin-bottom: 10px;
     position: relative; 
+    transition: transform 0.3s ease;
 }
+
+.avatar-wrapper:hover {
+    transform: scale(1.1);
+}
+
 
 .avatar {
     width: 180px; 
@@ -172,18 +178,10 @@ body::before {
     border-radius: 50%;
     background-size: cover; 
     background-position: center;
-    transition: transform 0.3s ease;
-    
-
     border: none;
     box-shadow: none;
-
     position: relative; 
     z-index: 1; 
-}
-
-.avatar:hover {
-    transform: scale(1.1);
 }
 
 .input-field {
@@ -257,7 +255,7 @@ body::before {
     position: absolute;
     left: 120%; 
     top: 50%;
-    transform: translateY(-40%) rotate(0deg); 
+    transform: translateY(-100%) rotate(0deg); 
     background: var(--bg-block);
     color: var(--text-light);
     padding: 5px 10px;
@@ -270,12 +268,13 @@ body::before {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-    z-index: 10;
+    z-index: 100;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
 }
 .social-circle:hover::after {
     opacity: 1;
     visibility: visible;
-    transform: translateY(-50%) rotate(-5deg); 
+    transform: translateY(-110%) translateX(10px) rotate(-5deg);
 }
 
 .spotify-group {
@@ -391,7 +390,6 @@ body::before {
     100% { background-position: 300% center; }
 }
 
-
 @keyframes animated-glow {
     0% { box-shadow: 0 0 20px var(--accent-color-1); }
     25% { box-shadow: 0 0 30px var(--accent-color-2); }
@@ -476,6 +474,7 @@ body::before {
     visibility: visible;
 }
 
+
 .cat {
     position: absolute; 
     z-index: 5; 
@@ -485,19 +484,14 @@ body::before {
     image-rendering: pixelated; 
 }
 
-
 .avatar-frame {
     position: absolute;
-
     width: 220px; 
     height: 220px; 
-    
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     z-index: 2; 
-    
     pointer-events: none; 
     image-rendering: pixelated; 
 }
@@ -508,14 +502,12 @@ body::before {
     left: 50%;
     transform: translateX(-50%);
     width: 60px; 
-    
     z-index: 3; 
 }
 
 
 @media (max-width: 768px) {
     
-    body, 
     .profile-container,
     .music-button {
         cursor: auto; 
@@ -524,7 +516,7 @@ body::before {
     .cat:not(#cat-avatar) {
         display: none;
     }
-
+    
     .profile-container {
         width: 95%; 
         padding: 20px;
@@ -543,6 +535,19 @@ body::before {
         display: grid;
         grid-template-columns: 1fr; 
         gap: 20px;
+    }
+    
+    .avatar-wrapper {
+        transition: none;
+        transform: none;
+    }
+    .avatar-wrapper:hover {
+        transform: none; 
+    }
+    
+    .avatar-wrapper:active {
+        transform: scale(1.1);
+        transition: transform 0.1s ease-out;
     }
 
     .social-links {
@@ -564,8 +569,8 @@ body::before {
         display: block; 
         opacity: 1;
         visibility: visible;
-        transform: translateY(-50%) rotate(-5deg); 
-        z-index: 20; 
+        transform: translateY(-110%) translateX(10px) rotate(-5deg); 
+        z-index: 200; 
     }
 
     .spotify-group {
@@ -583,10 +588,10 @@ body::before {
         width: 150px;
         height: 150px;
     }
-
+    
     .avatar-frame {
-        width: 165px; 
-        height: 165px;
+        width: 180px; 
+        height: 180px;
     }
 
     #cat-avatar {
@@ -605,11 +610,11 @@ body::before {
         height: 35px;
         font-size: 1em;
     }
-
+    
     .volume-container {
          display: none; 
     }
-
+    
     .input-field.name-field {
         font-size: 1.3em;
     }
