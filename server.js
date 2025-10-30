@@ -11,9 +11,7 @@ const server = http.createServer((req, res) => {
         filePath = './index.html';
     }
 
-    // Đảm bảo các file trong thư mục con cũng được tìm thấy
-    // Ví dụ: /mp3/in_the_rain.mp3 -> ./mp3/in_the_rain.mp3
-    filePath = decodeURIComponent(filePath); // Xử lý các ký tự đặc biệt trong tên file
+    filePath = decodeURIComponent(filePath);
 
     const extname = String(path.extname(filePath)).toLowerCase();
     const mimeTypes = {
@@ -22,7 +20,7 @@ const server = http.createServer((req, res) => {
         '.js': 'text/javascript',
         '.gif': 'image/gif', 
         '.jpg': 'image/jpeg',
-        '.png': 'image/png', // Thêm PNG
+        '.png': 'image/png', 
         '.mp3': 'audio/mpeg',
     };
 

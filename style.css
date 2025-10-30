@@ -60,7 +60,6 @@ body::before {
         "bio-section right-panel"
         "username-area username-area"; 
     gap: 20px;
-    /* === SỬA 1: ĐỔI CON TRỎ KHU VỰC AVATAR === */
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewport="0 0 16 16"><text x="0" y="15" font-size="16">👾</text></svg>') 8 8, auto;
     opacity: 0;
     visibility: hidden;
@@ -91,7 +90,6 @@ body::before {
     font-size: 1.1em;
     box-shadow: 0 0 10px rgba(74, 242, 161, 0.5);
     transition: all 0.3s ease;
-    /* === SỬA 2: ĐỔI CON TRỎ NÚT NHẠC === */
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewport="0 0 16 16"><text x="0" y="15" font-size="16">👾</text></svg>') 8 8, pointer;
 }
 
@@ -176,11 +174,10 @@ body::before {
     background-position: center;
     transition: transform 0.3s ease;
     
-    /* --- ĐÃ CẬP NHẬT --- */
-    /* Xóa border và shadow cũ */
+
     border: none;
     box-shadow: none;
-    /* Đặt làm lớp dưới cùng */
+
     position: relative; 
     z-index: 1; 
 }
@@ -394,7 +391,7 @@ body::before {
     100% { background-position: 300% center; }
 }
 
-/* Keyframes cho viền chạy màu */
+
 @keyframes animated-glow {
     0% { box-shadow: 0 0 20px var(--accent-color-1); }
     25% { box-shadow: 0 0 30px var(--accent-color-2); }
@@ -479,10 +476,6 @@ body::before {
     visibility: visible;
 }
 
-
-/* =================================== */
-/* === Hiệu ứng mèo con Pixel === */
-/* =================================== */
 .cat {
     position: absolute; 
     z-index: 5; 
@@ -492,28 +485,23 @@ body::before {
     image-rendering: pixelated; 
 }
 
-/* --- (Lớp 2) KHUNG AVATAR MỚI --- */
+
 .avatar-frame {
     position: absolute;
-    /* Kích thước: Hơi lớn hơn avatar một chút */
-    /* Bạn có thể cần điều chỉnh 195px này cho vừa với file GIF của bạn */
-    /* === HÃY THỬ ĐIỀU CHỈNH CON SỐ NÀY (VD: 220px) NẾU KHUNG BỊ NHỎ === */
+
     width: 220px; 
     height: 220px; 
     
-    /* Căn giữa */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
-    /* Xếp lớp: Nằm trên avatar (1) nhưng dưới con mèo (3) */
+
     z-index: 2; 
     
     pointer-events: none; 
     image-rendering: pixelated; 
 }
 
-/* Con mèo ngồi trên Avatar (cat-avatar.gif) */
 #cat-avatar {
     position: absolute; 
     top: -20px; 
@@ -521,30 +509,22 @@ body::before {
     transform: translateX(-50%);
     width: 60px; 
     
-    /* (Lớp 3) Đặt z-index lên trên cùng */
     z-index: 3; 
 }
 
 
-/* =================================== */
-/* === Code tối ưu cho điện thoại === */
-/* =Example (max-width: 768px)  === */
-/* =================================== */
 @media (max-width: 768px) {
     
-    /* 1. Đặt lại cursor cho mobile */
     body, 
     .profile-container,
     .music-button {
         cursor: auto; 
     }
 
-    /* Ẩn tất cả mèo trừ con mèo trên avatar */
     .cat:not(#cat-avatar) {
         display: none;
     }
-    
-    /* 2. Điều chỉnh layout chính thành 1 cột */
+
     .profile-container {
         width: 95%; 
         padding: 20px;
@@ -559,14 +539,12 @@ body::before {
         gap: 25px; 
     }
 
-    /* 3. Sắp xếp lại .right-panel */
     .right-panel {
         display: grid;
         grid-template-columns: 1fr; 
         gap: 20px;
     }
 
-    /* 4. Chuyển các icon social thành hàng ngang */
     .social-links {
         grid-column: 1; 
         flex-direction: row; 
@@ -576,14 +554,12 @@ body::before {
         height: auto; 
     }
 
-    /* Tắt hiệu ứng tooltip chữ khi hover */
     .social-circle:hover::after {
         display: none; 
         opacity: 0;
         visibility: hidden;
     }
 
-    /* HIỂN THỊ tooltip khi nhấn giữ (active) */
     .social-circle:active::after {
         display: block; 
         opacity: 1;
@@ -592,7 +568,6 @@ body::before {
         z-index: 20; 
     }
 
-    /* 5. Điều chỉnh Spotify embed */
     .spotify-group {
         grid-column: 1; 
     }
@@ -604,25 +579,21 @@ body::before {
          height: 100%;
     }
 
-    /* 6. Giảm kích thước avatar */
     .avatar {
         width: 150px;
         height: 150px;
     }
-    
-    /* Căn chỉnh lại khung cho vừa avatar 150px */
+
     .avatar-frame {
-        width: 165px; /* Điều chỉnh cho vừa */
+        width: 165px; 
         height: 165px;
     }
 
-    /* Điều chỉnh mèo avatar trên mobile */
     #cat-avatar {
         top: -15px; 
         width: 55px; 
     }
 
-    /* 7. Điều chỉnh khu vực điều khiển nhạc */
     .music-controls {
         top: 10px;
         right: 10px;
@@ -634,13 +605,11 @@ body::before {
         height: 35px;
         font-size: 1em;
     }
-    
-    /* Ẩn thanh trượt volume */
+
     .volume-container {
          display: none; 
     }
-    
-    /* 8. Điều chỉnh font chữ */
+
     .input-field.name-field {
         font-size: 1.3em;
     }
@@ -652,7 +621,6 @@ body::before {
         font-size: 1.5em;
     }
 
-    /* 9. Tinh chỉnh Splash Screen */
     #splash-screen {
         padding: 0 20px; 
         box-sizing: border-box; 
